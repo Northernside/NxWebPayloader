@@ -1,0 +1,53 @@
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none
+}
+
+html {
+    background-color: #1c1c2d;
+    color: white;
+    font-family: Arial;
+}
+
+a {
+    color: unset;
+    text-decoration: none;
+}
+
+.card a {
+    color: #9ad6da;
+}
+
+.card {
+    width: max-content;
+    background-color: rgba(255, 255, 255, .05);
+    border-radius: 10px;
+    text-align: center;
+    padding: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+}
+
+.hidden {
+    display: none;
+}
+
+.payloadUploadLabel {
+    background-color: #3c3c5d;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.payload {
+    width: max-content;
+    margin: 10px auto 0px;
+    background-color: #3c3c5d;
+    padding: 5px;
+    border-radius: 5px;
+}
