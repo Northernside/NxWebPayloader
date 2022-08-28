@@ -2,24 +2,37 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>NxWebLoader</title>
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="js/main.js"></script>
 </head>
 <body>
-  <div class="card">
-      <h1>NxWebPayloader</h1>
-      <div class="upload">
-          <input accept=".bin" class="hidden" id="payloadUpload" onchange="document.getElementById('fileName').innerText = document.getElementById('payloadUpload').value.replace('C:\\fakepath\\', '');"
-                 type="file">
-          <label class="payloadUploadLabel" for="payloadUpload">Select file</label>
-          <p id="fileName"></p>
-      </div>
-      <div class="payload">
-          <button class="hidden" id="payloadButton" onclick="goButton()"></button>
-          <label class="payloadButtonLabel" for="payloadButton">Payload</label>
-      </div>
-      <p>Based on <a href="https://github.com/stanzhai/switch-payload-loader/blob/master/main.js">stanzhai</a>'s work.</p>
-  </div>
+<div class="card">
+    <h1>NxWebPayloader</h1>
+    <div class="upload">
+        <input accept=".bin" class="hidden" id="payloadUpload"
+               onchange="document.getElementById('fileName').innerText = document.getElementById('payloadUpload').value.replace('C:\\fakepath\\', '');"
+               type="file">
+        <div>
+            <label class="payloadUploadLabel" for="payloadUpload">Select file</label>
+            <p style="float: inside">or</p>
+            <label class="testPayload payloadUploadLabel" onclick="
+                document.getElementById('payloadUpload').value = null;
+                document.getElementById('fileName').innerText = '';
+                goButton();
+            ">Use Test Payload</label>
+        </div>
+        <p id="fileName"></p>
+    </div>
+    <div class="payload">
+        <button class="hidden" id="payloadButton" onclick="goButton();"></button>
+        <label class="payloadButtonLabel" for="payloadButton">Payload</label>
+    </div>
+    <div id="log">
+        <p class="logged-item">Logs:</p>
+    </div>
+    <p>Based on <a href="https://github.com/stanzhai/switch-payload-loader/blob/master/main.js">stanzhai</a>'s work.</p>
+</div>
 </body>
 </html>

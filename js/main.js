@@ -69,22 +69,22 @@ let device;
 
 async function launchPayload(payload) {
     await device.open();
-    console.log(`Connected to ${device.manufacturerName} ${device.productName}`);
+    log(`Connected to ${device.manufacturerName} ${device.productName}`);
     await device.claimInterface(0);
     const deviceID = await device.transferIn(1, 16);
-    console.log(`Device ID: ${bufferToHex(deviceID.data)}`);
+    log(`Device ID: ${bufferToHex(deviceID.data)}`);
 
     const rcmPayload = createRCMPayload(intermezzo, payload);
-    console.log("Sending payload...");
+    log("Sending payload...");
     const writeCount = await write(device, rcmPayload);
-    console.log("Payload sent!");
+    log("Payload sent!");
 
     if (writeCount % 2 !== 1) {
-        console.log("Switching to higher buffer...");
+        log("Switching to higher buffer...");
         await device.transferOut(1, new ArrayBuffer(0x1000));
     }
 
-    console.log("Triggering vulnerability...");
+    log("Triggering vulnerability...");
     const vulnerabilityLength = 0x7000;
     await device.controlTransferIn({
         requestType: 'standard',
@@ -93,35 +93,42 @@ async function launchPayload(payload) {
         value: 0x00,
         index: 0x00
     }, vulnerabilityLength);
+    log("Vulnerability sent!");
 }
 
 async function goButton() {
-    console.log("Requesting access to device...");
+    log("Requesting access to device...");
 
     try {
         device = await navigator.usb.requestDevice({filters: [{vendorId: 0x0955}]});
     } catch (error) {
-        console.log(error);
-        console.log("Failed to get a device. Did you chose one?");
+        log(error);
+        log("Failed to get a device. Did you chose one?");
         return;
     }
 
-    let payload;
+    let payload = null;
     const file = document.getElementById("payloadUpload").files[0];
     if (!file) {
-        alert("You need to upload a file, to use an uploaded file.");
-        return;
+        await fetch("/bin/HelloArch.bin")
+            .then(res => res.arrayBuffer())
+            .then(blob => {
+                payload = new Uint8Array(blob);
+            });
+    } else {
+        payload = new Uint8Array(await readFileAsArrayBuffer(file));
     }
 
-    console.log(`Using uploaded payload "${file.name}"`);
-    payload = new Uint8Array(await readFileAsArrayBuffer(file));
-    console.log("Logging payload bytes...");
-
-    let payloadToLog = "";
-    for (let i = 0; i < payload.length; i++) {
-        payloadToLog += "0x" + payload[i].toString(16) + ", ".toUpperCase();
-    }
-
-    console.log("Preparing to launch payload...");
+    log(`Using ${(file != null ? "uploaded" : "example")} payload ${(file != null ? ('"' + file.name + '"') : "")}`);
+    log("Preparing to launch payload...");
     await launchPayload(payload);
+}
+
+function log(message) {
+    let div = document.getElementById("log")
+        p = document.createElement("p");
+    p.innerHTML = message;
+    p.className = "logged-item";
+    div.append(p);
+    console.log(message);
 }

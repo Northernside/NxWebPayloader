@@ -51,3 +51,15 @@ a {
     padding: 5px;
     border-radius: 5px;
 }
+
+#log {
+    text-align: left;
+    width: 95%;
+    background-color: rgba(0, 0, 0, 0.29);
+}
+
+.logged-item {
+    font-size: 13px;
+    font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
+    margin: 2px;
+}
